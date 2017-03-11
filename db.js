@@ -1,34 +1,27 @@
-"use strict";
+'use strict';
 
 const mysql = require('mysql');
 
 module.exports = {
 	connectToDatabase: function(host, user, pass, database){
-		let con = mysql.createConnection({
-			host: host,
-			user: user,
-			password: pass,
-			database: database
+		let pool = mysql.createPool({
+			connectionLimit: 10,
+			host: 'localhost',
+			user: 'root',
+			password: 'roop',
+			database: 'PHARMACY'
 		});
 
-		con.connect((err) => {
-			if(err){
-				console.log("db conection failed");
-				throw err;
-			}
-
-			console.log("db connection established");
-		});
-
-		con.doQuery = doQuery;
-
-		return con;
+		return {
+			pool: pool,
+			query: query
+		};
 	}
 };
 
-function doQuery(query, callback){
+function query(query, callback){
 	console.log('performing query: '+query);
-	this.query(query, (err,rows) => {
+	this.pool.query(query, (err,rows) => {
 
 		console.log('Got from db:');
 		console.log(rows);
