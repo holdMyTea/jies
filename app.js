@@ -1,70 +1,61 @@
 'use strict';
 
-const http = require('http');
-const connector = require('./connector');
+// babel?
+//import express from 'express';
 
-let server = http.createServer();
+const db = require('./db');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-server.on('request', function(request, response){
-	console.log(
-		'Got request\nurl:'+request.url
-		+'\nmethod: '+request.method
+let database = db();
+let app = express();
+
+database.connect('localhost', 'root', 'roop', 'PHARMACY');
+
+//TODO: check out stackoverflow magic
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
+app.listen(1488, () => console.log('Listening on 1488'));
+
+app.get('/', (request, response) => response.send('Kappa'));
+
+app.get(/^\/employee\/[0-9]+$/, (request, response) => {
+	console.log('GET into url: '+request.url);
+
+	let id = request.url.substring(
+		request.url.lastIndexOf('/')+1
 	);
+	console.log('id = '+id);
 
-	request.on('error', function(err){
-		console.log('Taking heavy casulties: '+err);
-	});
-
-	if(request.method == 'GET'){
-		connector.handleGet(
-			request.url,
+	//TODO: check wheter given id exists
+	if(Number.isInteger(Number(id)))
+		database.query('select * from  EMPLOYEES where ID='+id,
 			(err, data) => {
 				if(err) throw err;
 
-				successfulResponse(response, data);
+				response.send(data);
 			}
 		);
-	}
-
-	else if(request.method == 'POST'){
-		let body = [];
-
-		request.on('data', function(piece){
-			body.push(piece);
-		}).on('end', function(){
-			body = Buffer.concat(body).toString();
-			connector.handlePost(
-				request.url,
-				body,
-				(err, data) => {
-					if(err) throw err;
-
-					successfulResponse(response, data);
-				}
-			)
-		});
-	}
 
 });
 
-server.listen(1488);
+app.post(/^\/employee$/, (request, response) => {
+	console.log('POST into url: '+request.url);
 
-function successfulResponse(response, data){
-	console.log("Sending response");
+	let body = request.body;
+	console.log('body: '+JSON.stringify(request.body));
 
-	response.writeHead(200, {
-		'Content-Type': 'raw'
-	});
-	response.write(
-		prepareResponse(data)
+
+	database.query(
+		'insert into EMPLOYEES(NAME,PHONE)'
+		+' values(\''+body.name+'\','+body.phone+')',
+		(err, data) => {
+			if(err) throw err;
+
+			response.end();
+		}
 	);
-	response.end();
-}
-
-function prepareResponse(text){
-	return '<html>'+
-			'<body>'+
-			'<p>'+JSON.stringify(text)+'</p>'+
-			'</body>'+
-			'</html>';
-}
+});
