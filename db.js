@@ -1,18 +1,12 @@
 'use strict';
 
 
-// again babel?
-/*export default function db(){
+export default function db(){
 	return {
 		connect: connect,
 		query: query
 	};
-}*/
-
-module.exports = () => ({
-	connect: connect,
-	query: query
-});
+}
 
 const mysql = require('mysql');
 

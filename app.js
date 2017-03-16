@@ -1,61 +1,63 @@
 'use strict';
 
-// babel?
-//import express from 'express';
+import express from 'express';
+import bodyParser from 'body-parser';
+import db from './db';
 
-const db = require('./db');
-const express = require('express');
-const bodyParser = require('body-parser');
-
-let database = db();
-let app = express();
+const database = db();
+const app = express();
 
 database.connect('localhost', 'root', 'roop', 'PHARMACY');
 
-//TODO: check out stackoverflow magic
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
-app.listen(1488, () => console.log('Listening on 1488'));
-
 app.get('/', (request, response) => response.send('Kappa'));
 
-app.get(/^\/employee\/[0-9]+$/, (request, response) => {
-	console.log('GET into url: '+request.url);
+app.get('/employee/:id', (req, res) => {
+	console.log('GET into url: '+req.url);
 
-	let id = request.url.substring(
-		request.url.lastIndexOf('/')+1
-	);
-	console.log('id = '+id);
+	const id = req.params.id;
 
-	//TODO: check wheter given id exists
 	if(Number.isInteger(Number(id)))
 		database.query('select * from  EMPLOYEES where ID='+id,
 			(err, data) => {
-				if(err) throw err;
+				if(err){
+					console.error(err.stack);
+					res.status(500);
+					res.send('Taking heavy casulties');
+				}
 
-				response.send(data);
+				res.json(data);
 			}
 		);
 
 });
 
-app.post(/^\/employee$/, (request, response) => {
-	console.log('POST into url: '+request.url);
+app.post('/employee', (req, res) => {
+	console.log('POST into url: '+req.url);
 
-	let body = request.body;
-	console.log('body: '+JSON.stringify(request.body));
+	const body = req.body;
+	console.log('body: '+JSON.stringify(req.body));
 
 
 	database.query(
 		'insert into EMPLOYEES(NAME,PHONE)'
-		+' values(\''+body.name+'\','+body.phone+')',
+		+' values("'+body.name+'",'+body.phone+')',
 		(err, data) => {
-			if(err) throw err;
+			if(err){
+				console.error(err.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
 
-			response.end();
+			res.status(200);
+			res.send('Successful');
+			console.log('POST to Employee successful');
 		}
 	);
 });
+
+app.listen(1488, () => console.log('Listening on 1488'));
