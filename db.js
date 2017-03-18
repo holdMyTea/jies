@@ -1,16 +1,17 @@
 'use strict';
 
-
-export default function db(){
-	return {
-		connect: connect,
-		query: query
-	};
-}
-
 const mysql = require('mysql');
 
 let pool;
+
+// like this, or should put it into export function?
+connect('localhost', 'root', 'roop', 'PHARMACY');
+
+export default function db(){
+	return {
+		query: query
+	};
+}
 
 function connect(host, user, pass, database){
 	pool = mysql.createPool({
