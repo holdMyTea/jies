@@ -15,7 +15,7 @@ let pool;
 function connect(host, user, pass, database){
 	pool = mysql.createPool({
 		connectionLimit: 10,
-		host: 'localhost',
+		host: 'db',
 		user: 'root',
 		password: 'roop',
 		database: 'PHARMACY'
