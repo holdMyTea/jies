@@ -2,9 +2,8 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
-import db from './db';
+import database from './db';
 
-const database = db();
 const app = express();
 
 app.use(bodyParser.json());
@@ -24,9 +23,13 @@ app.post('/employee', (req, res) => {
 	database.query(
 		'insert into EMPLOYEES(NAME,PHONE)'
 		+' values("'+body.name+'",'+body.phone+')',
-		(err, data) => {
-			if(err){
-				console.error(err.stack);
+		(error, results, fields) => {
+			console.log("in POST:");
+			console.log("error: ",error);
+			console.log("results: ",results);
+			console.log("fields: ",fields);
+			if(error){
+				console.error(error.stack);
 				res.status(500);
 				res.send('Taking heavy casulties');
 			}
@@ -46,14 +49,16 @@ app.get('/employee/:id', (req, res) => {
 
 	if(Number.isInteger(Number(id)))
 		database.query('select * from EMPLOYEES where ID='+id,
-			(err, data) => {
-				if(err){
+			(error, results, fields) => {
+				if(error){
 					console.error(err.stack);
 					res.status(500);
 					res.send('Taking heavy casulties');
 				}
 				else{
-					res.json(data);
+					res.status(200);
+					res.json(results[0]);
+					console.log('GET succesfull');
 				}
 			}
 		);
