@@ -1,70 +1,68 @@
 'use strict';
 
-const http = require('http');
-const connector = require('./connector');
+import express from 'express';
+import bodyParser from 'body-parser';
+import database from './db';
 
-let server = http.createServer();
+const app = express();
 
-server.on('request', function(request, response){
-	console.log(
-		'Got request\nurl:'+request.url
-		+'\nmethod: '+request.method
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
+app.get('/', (request, response) => response.send('Kappa'));
+
+app.post('/employee', (req, res) => {
+	console.log('POST into url: '+req.url);
+
+	const body = req.body;
+	console.log('body: '+JSON.stringify(req.body));
+
+
+	database.query(
+		'insert into EMPLOYEES(NAME,PHONE)'
+		+' values("'+body.name+'",'+body.phone+')',
+		(error, results, fields) => {
+			console.log("in POST:");
+			console.log("error: ",error);
+			console.log("results: ",results);
+			console.log("fields: ",fields);
+			if(error){
+				console.error(error.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.send('Successful');
+				console.log('POST to Employee successful');
+			}
+		}
 	);
+});
 
-	request.on('error', function(err){
-		console.log('Taking heavy casulties: '+err);
-	});
+app.get('/employee/:id', (req, res) => {
+	console.log('GET into url: '+req.url);
 
-	if(request.method == 'GET'){
-		connector.handleGet(
-			request.url,
-			(err, data) => {
-				if(err) throw err;
+	const id = req.params.id;
 
-				successfulResponse(response, data);
+	if(Number.isInteger(Number(id)))
+		database.query('select * from EMPLOYEES where ID='+id,
+			(error, results, fields) => {
+				if(error){
+					console.error(err.stack);
+					res.status(500);
+					res.send('Taking heavy casulties');
+				}
+				else{
+					res.status(200);
+					res.json(results[0]);
+					console.log('GET succesfull');
+				}
 			}
 		);
-	}
-
-	else if(request.method == 'POST'){
-		let body = [];
-
-		request.on('data', function(piece){
-			body.push(piece);
-		}).on('end', function(){
-			body = Buffer.concat(body).toString();
-			connector.handlePost(
-				request.url,
-				body,
-				(err, data) => {
-					if(err) throw err;
-
-					successfulResponse(response, data);
-				}
-			)
-		});
-	}
 
 });
 
-server.listen(1488);
-
-function successfulResponse(response, data){
-	console.log("Sending response");
-
-	response.writeHead(200, {
-		'Content-Type': 'raw'
-	});
-	response.write(
-		prepareResponse(data)
-	);
-	response.end();
-}
-
-function prepareResponse(text){
-	return '<html>'+
-			'<body>'+
-			'<p>'+JSON.stringify(text)+'</p>'+
-			'</body>'+
-			'</html>';
-}
+app.listen(1488, () => console.log('Listening on 1488'));
