@@ -1,0 +1,23 @@
+version: '2'
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: roop
+      MYSQL_DATABASE: PHARMACY
+    restart: always
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+  server:
+    build: .
+    container_name: server
+    ports:
+      - "1488:1488"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - db
