@@ -16,4 +16,4 @@ app.use(employee);
 
 app.get('/', (request, response) => response.send('Kappa'));
 
-app.listen(1488, () => console.log('Listening on 1488'));
+app.listen(process.env.APP_PORT, () => console.log('Listening'));
