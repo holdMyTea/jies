@@ -70,10 +70,14 @@ function getEmployeeById(req, res){
 				else{
 					res.status(200);
 					res.json(results[0]);
-					console.log('GET to /employee/id succesfull');
+					console.log('GET to /employee/:id succesfull');
 				}
 			}
 		);
 }
 
-export default {getEmployeeById, postEmployee, getAllEmployees};
+export default {
+	getEmployeeById,
+	postEmployee,
+	getAllEmployees
+};

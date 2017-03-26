@@ -47,7 +47,7 @@ function getManufacturersByCountry(req, res){
 				else{
 					res.status(200);
 					res.json(results);
-					console.log('GET to /manufacturer/country/ succesfull');
+					console.log('GET to /manufacturer/country/:country succesfull');
 				}
 			}
 		);
@@ -83,7 +83,8 @@ function getManufacturerById(req, res){
 	const id = req.params.id;
 
 	if(Number.isInteger(Number(id)))
-		database.query('select * from MANUFACTURERS where ID='+id,
+		database.query(
+			'select * from MANUFACTURERS where ID='+id,
 			(error, results, fields) => {
 				if(error){
 					console.error(err.stack);
@@ -93,12 +94,15 @@ function getManufacturerById(req, res){
 				else{
 					res.status(200);
 					res.json(results[0]);
-					console.log('GET to /manufacturer/id succesfull');
+					console.log('GET to /manufacturer/:id succesfull');
 				}
 			}
 		);
 }
 
-export default {postManufacturer, getManufacturersByCountry,
-	getAllManufacturers, getManufacturerById
+export default {
+	postManufacturer,
+	getManufacturersByCountry,
+	getAllManufacturers,
+	getManufacturerById
 };
