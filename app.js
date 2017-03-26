@@ -4,6 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import employee from './routes/employee.route';
+import manufacturer from './routes/manufacturer.route';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(employee);
+app.use(manufacturer);
 
 app.get('/', (request, response) => response.send('Kappa'));
 
