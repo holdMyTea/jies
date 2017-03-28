@@ -1,16 +1,20 @@
-'use strict';
+/*
+ * a = accumulator
+ * c = current element
+ * v = value
+ */
+const getValues = (a, c) => {
+	const v = process.env[c];
 
-let vars = {
-	APP_PORT: process.env.APP_PORT,
-	DB_HOST: process.env.DB_HOST,
-	DB_USER: process.env.DB_USER,
-	DB_PASS: process.env.DB_PASS,
-	DB_DATABASE: process.env.DB_DATABASE
-};
+	if (v) a[c] = v;
+	else throw new Error('Enviromental property '+c+' is missing');
 
-for(const key in vars){
-	if(!vars[key])
-		throw new Error('Enviromental property '+key+' is missing');
+	return a;
 }
-
-export default vars;
+export default [
+	'APP_PORT',
+	'DB_HOST',
+	'DB_USER',
+	'DB_PASS',
+	'DB_DATABASE'
+].reduce(getValues, {});
