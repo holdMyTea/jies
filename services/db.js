@@ -1,12 +1,14 @@
 'use strict';
 
-const mysql = require('mysql');
+import mysql from 'mysql';
+
+import vars from '../config/variables';
 
 let connection = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'root',
-	password : 'roop',
-	database : 'PHARMACY'
+	host     : vars.DB_HOST,
+	user     : vars.DB_USER,
+	password : vars.DB_PASS,
+	database : vars.DB_DATABASE
 });
 
 export default connection;
