@@ -21,3 +21,9 @@ services:
       - /app/node_modules
     depends_on:
       - db
+    environment:
+      APP_PORT: 3000
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: roop
+      DB_DATABASE: PHARMACY
