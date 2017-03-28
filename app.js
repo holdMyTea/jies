@@ -3,6 +3,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
+import vars from './config/variables';
 import employee from './routes/employee.route';
 
 const app = express();
@@ -16,4 +17,4 @@ app.use(employee);
 
 app.get('/', (request, response) => response.send('Kappa'));
 
-app.listen(1488, () => console.log('Listening on 1488'));
+app.listen(vars.APP_PORT, () => console.log('Listening'));
