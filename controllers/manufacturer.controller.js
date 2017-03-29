@@ -2,17 +2,13 @@
 
 import database from '../services/db';
 
-function postEmployee(req, res){
+function postManufacturer(req, res){
 	const body = req.body;
 
 	database.query(
-		'insert into EMPLOYEES(NAME,PHONE)'
-		+' values("'+body.name+'",'+body.phone+')',
+		'insert into MANUFACTURERS(NAME,PHONE,COUNTRY)'
+		+' values("'+body.name+'",'+body.phone+', "'+body.country+'")',
 		(error, results, fields) => {
-			console.log("in POST:");
-			console.log("error: ",error);
-			console.log("results: ",results);
-			console.log("fields: ",fields);
 			if(error){
 				console.error(error.stack);
 				res.status(500);
@@ -26,11 +22,31 @@ function postEmployee(req, res){
 	);
 }
 
-function getAllEmployees(req, res){
+function getManufacturersByCountry(req, res){
+	const country = req.params.country;
+
+	if(String(country).length > 0)
+		database.query(
+			'select * from MANUFACTURERS where COUNTRY="'+country+'"',
+			(error, results, fields) => {
+				if(error){
+					console.error(err.stack);
+					res.status(500);
+					res.send('Taking heavy casulties');
+				}
+				else{
+					res.status(200);
+					res.json(results);
+				}
+			}
+		);
+}
+
+function getAllManufacturers(req, res){
 	database.query(
-		'select * from EMPLOYEES',
+		'select * from MANUFACTURERS',
 		(error, results, fields) => {
-			console.log("in GET:");getEmployeeById
+			console.log("in GET:");
 			console.log("error: ",error);
 			console.log("results: ",results);
 			console.log("fields: ",fields);
@@ -47,11 +63,12 @@ function getAllEmployees(req, res){
 	)
 }
 
-function getEmployeeById(req, res){
+function getManufacturerById(req, res){
 	const id = req.params.id;
 
 	if(Number.isInteger(Number(id)))
-		database.query('select * from EMPLOYEES where ID='+id,
+		database.query(
+			'select * from MANUFACTURERS where ID='+id,
 			(error, results, fields) => {
 				if(error){
 					console.error(err.stack);
@@ -67,7 +84,8 @@ function getEmployeeById(req, res){
 }
 
 export default {
-	getEmployeeById,
-	postEmployee,
-	getAllEmployees
+	postManufacturer,
+	getManufacturersByCountry,
+	getAllManufacturers,
+	getManufacturerById
 };
