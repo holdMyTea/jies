@@ -3,10 +3,7 @@
 import database from '../services/db';
 
 function postEmployee(req, res){
-	console.log('POST into url: '+req.url);
-
 	const body = req.body;
-	console.log('body: '+JSON.stringify(req.body));
 
 	database.query(
 		'insert into EMPLOYEES(NAME,PHONE)'
@@ -24,15 +21,12 @@ function postEmployee(req, res){
 			else{
 				res.status(200);
 				res.send('Successful');
-				console.log('POST to /employee successful');
 			}
 		}
 	);
 }
 
 function getAllEmployees(req, res){
-	console.log('GET into url: '+req.url);
-
 	database.query(
 		'select * from EMPLOYEES',
 		(error, results, fields) => {
@@ -48,15 +42,12 @@ function getAllEmployees(req, res){
 			else{
 				res.status(200);
 				res.json(results);
-				console.log('GET to /employee successful');
 			}
 		}
 	)
 }
 
 function getEmployeeById(req, res){
-	console.log('GET into url: '+req.url);
-
 	const id = req.params.id;
 
 	if(Number.isInteger(Number(id)))
@@ -70,7 +61,6 @@ function getEmployeeById(req, res){
 				else{
 					res.status(200);
 					res.json(results[0]);
-					console.log('GET to /employee/:id succesfull');
 				}
 			}
 		);
