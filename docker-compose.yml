@@ -6,7 +6,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: roop
+      MYSQL_ROOT_PASSWORD: 12
       MYSQL_DATABASE: PHARMACY
     restart: always
     volumes:

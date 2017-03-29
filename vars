@@ -1,4 +1,4 @@
-export APP_PORT=1488
+export APP_PORT=3000
 export DB_HOST=localhost
 export DB_USER=root
 export DB_PASS=12
