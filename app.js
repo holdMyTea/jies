@@ -2,6 +2,7 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 
 import employee from './routes/employee.route';
 import manufacturer from './routes/manufacturer.route';
@@ -13,6 +14,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+
+app.use(morgan('common'));
 
 app.use('/employee', employee);
 app.use('/manufacturer', manufacturer);
