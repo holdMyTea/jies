@@ -2,12 +2,52 @@
 
 import database from '../services/db';
 
-function postManufacturer(req, res){
+function addManufacturer(req, res){
 	const body = req.body;
 
 	database.query(
 		'insert into MANUFACTURERS(NAME,PHONE,COUNTRY)'
 		+' values("'+body.name+'",'+body.phone+', "'+body.country+'")',
+		(error, results, fields) => {
+			if(error){
+				console.error(error.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.send('Successful');
+			}
+		}
+	);
+}
+
+function editManufacturer(req, res){
+	const id = req.params.id;
+	const body = req.body;
+
+	database.query(
+		'update MANUFACTURERS set NAME="'+body.name+'",PHONE='+body.phone
+		+',COUNTRY="'+body.country+'" where ID='+id,
+		(error, results, fields) => {
+			if(error){
+				console.error(error.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.send('Successful');
+			}
+		}
+	);
+}
+
+function deleteManufacturer(req, res){
+	const id = req.params.id;
+
+	database.query(
+		'delete from MANUFACTURERS where ID='+id,
 		(error, results, fields) => {
 			if(error){
 				console.error(error.stack);
@@ -46,10 +86,6 @@ function getAllManufacturers(req, res){
 	database.query(
 		'select * from MANUFACTURERS',
 		(error, results, fields) => {
-			console.log("in GET:");
-			console.log("error: ",error);
-			console.log("results: ",results);
-			console.log("fields: ",fields);
 			if(error){
 				console.error(error.stack);
 				res.status(500);
@@ -84,7 +120,9 @@ function getManufacturerById(req, res){
 }
 
 export default {
-	postManufacturer,
+	addManufacturer,
+	editManufacturer,
+	deleteManufacturer,
 	getManufacturersByCountry,
 	getAllManufacturers,
 	getManufacturerById

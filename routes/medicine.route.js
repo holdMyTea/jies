@@ -8,9 +8,12 @@ const router = express.Router();
 
 router.route('/')
 	.get(controller.getAllMedicines)
-	.post(controller.postMedicine);
+	.post(controller.addMedicine);
 
-router.get('/:id', controller.getMedicineById);
+router.route('/:id')
+	.get(controller.getMedicineById)
+	.put(controller.editMedicine)
+	.delete(controller.deleteMedicine);
 
 router.get('/manufacturer/:manufacturer', controller.getMedicineByManufacturer);
 

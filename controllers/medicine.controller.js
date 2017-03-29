@@ -19,12 +19,54 @@ function getAllMedicines(req, res){
 	)
 }
 
-function postMedicine(req, res){
+function addMedicine(req, res){
 	const body = req.body;
 
 	database.query(
 		'insert into MEDICINES(NAME,MANUFACTURER,DOSAGE)'
 		+' values("'+body.name+'",'+body.manufacturer+', '+body.dosage+')',
+		(error, results, fields) => {
+			if(error){
+				console.error(error.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.send('Successful');
+			}
+		}
+	);
+}
+
+function editMedicine(req, res){
+	const id = req.params.id;
+	const body = req.body;
+
+	database.query(
+		'update MEDICINES set NAME="'+body.name
+		+'",MANUFACTURER='+body.manufacturer
+		+',DOSAGE='+body.dosage
+		+' where ID='+id,
+		(error, results, fields) => {
+			if(error){
+				console.error(error.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.send('Successful');
+			}
+		}
+	);
+}
+
+function deleteMedicine(req, res){
+	const id = req.params.id;
+
+	database.query(
+		'delete from MEDICINES where ID='+id,
 		(error, results, fields) => {
 			if(error){
 				console.error(error.stack);
@@ -81,7 +123,9 @@ function getMedicineByManufacturer(req, res){
 
 export default {
 	getAllMedicines,
-	postMedicine,
+	addMedicine,
+	editMedicine,
+	deleteMedicine,
 	getMedicineById,
 	getMedicineByManufacturer
 };
