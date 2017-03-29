@@ -14,9 +14,9 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
-app.use(employee);
-app.use(manufacturer);
-app.use(medicine);
+app.use('/employee', employee);
+app.use('/manufacturer', manufacturer);
+app.use('/medicine', medicine);
 
 app.get('/', (request, response) => response.send('Kappa'));
 

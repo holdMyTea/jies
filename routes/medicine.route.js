@@ -6,13 +6,12 @@ import controller from '../controllers/medicine.controller';
 
 const router = express.Router();
 
-router.route('/medicine')
+router.route('/')
 	.get(controller.getAllMedicines)
 	.post(controller.postMedicine);
 
-router.route('/medicine/:id').get(controller.getMedicineById);
+router.get('/:id', controller.getMedicineById);
 
-router.route('/medicine/manufacturer/:manufacturer')
-	.get(controller.getMedicineByManufacturer);
+router.get('/manufacturer/:manufacturer', controller.getMedicineByManufacturer);
 
 export default router;

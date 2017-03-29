@@ -6,14 +6,12 @@ import controller from '../controllers/manufacturer.controller';
 
 const router = express.Router();
 
-router.route('/manufacturer')
+router.route('/')
 	.get(controller.getAllManufacturers)
 	.post(controller.postManufacturer);
 
-router.route('/manufacturer/country/:country')
-	.get(controller.getManufacturersByCountry);
+router.get('/country/:country', controller.getManufacturersByCountry);
 
-router.route('/manufacturer/:id')
-	.get(controller.getManufacturerById);
+router.get('/:id', controller.getManufacturerById);
 
 export default router;

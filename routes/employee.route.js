@@ -6,10 +6,10 @@ import controller from '../controllers/employee.controller';
 
 const router = express.Router();
 
-router.route('/employee')
+router.route('/')
 	.post(controller.postEmployee)
 	.get(controller.getAllEmployees);
 
-router.get('/employee/:id', controller.getEmployeeById);
+router.get('/:id', controller.getEmployeeById);
 
 export default router;
