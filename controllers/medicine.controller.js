@@ -1,5 +1,3 @@
-'use strict';
-
 import database from '../services/db';
 
 function getAllMedicines(req, res){
@@ -22,32 +20,56 @@ function getAllMedicines(req, res){
 function addMedicine(req, res){
 	const body = req.body;
 
-	database.query(
-		'insert into MEDICINES(NAME,MANUFACTURER,DOSAGE)'
-		+' values("'+body.name+'",'+body.manufacturer+', '+body.dosage+')',
-		(error, results, fields) => {
-			if(error){
-				console.error(error.stack);
-				res.status(500);
-				res.send('Taking heavy casulties');
+	if(body.name && body.manufacturer && body.dosage){
+		database.query(
+			'insert into MEDICINES(NAME,MANUFACTURER,DOSAGE)'
+			+' values("'+body.name+'",'+body.manufacturer+', '+body.dosage+')',
+			(error, results, fields) => {
+				if(error){
+					console.error(error.stack);
+					res.status(500);
+					res.send('Taking heavy casulties');
+				}
+				else{
+					res.status(200);
+					res.send('Successful');
+				}
 			}
-			else{
-				res.status(200);
-				res.send('Successful');
-			}
-		}
-	);
+		);
+	} else{
+		res.status(400);
+		res.send('Insuffitient arguments');
+	}
 }
 
 function editMedicine(req, res){
 	const id = req.params.id;
 	const body = req.body;
 
+	if(!(body.name || body.manufacturer || body.dosage)){
+		res.status(400);
+		res.send('Insuffitient arguments');
+		return;
+	}
+
+	let query;
+	if(body.name)
+		query = 'NAME="'+body.name+'"';
+	if(body.manufacturer){
+		if(query)
+			query = query + ',MANUFACTURER='+body.manufacturer;
+		else
+			query = 'MANUFACTURER='+body.manufacturer;
+	}
+	if(body.dosage){
+		if(query)
+			query = query + ',DOSAGE="'+body.dosage+'"';
+		else
+			query = 'DOSAGE="'+body.dosage+'"';
+	}
+
 	database.query(
-		'update MEDICINES set NAME="'+body.name
-		+'",MANUFACTURER='+body.manufacturer
-		+',DOSAGE='+body.dosage
-		+' where ID='+id,
+		'update MEDICINES set '+query+' where ID='+id,
 		(error, results, fields) => {
 			if(error){
 				console.error(error.stack);
