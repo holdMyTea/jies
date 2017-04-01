@@ -1,5 +1,3 @@
-'use strict';
-
 import express from 'express';
 
 import controller from '../controllers/employee.controller';
@@ -7,9 +5,12 @@ import controller from '../controllers/employee.controller';
 const router = express.Router();
 
 router.route('/')
-	.post(controller.postEmployee)
+	.post(controller.addEmployee)
 	.get(controller.getAllEmployees);
 
-router.get('/:id', controller.getEmployeeById);
+router.route('/:id')
+	.get(controller.getEmployeeById)
+	.put(controller.editEmployee)
+	.delete(controller.deleteEmployee);
 
 export default router;
