@@ -114,10 +114,29 @@ function getEmployeeById(req, res){
 		);
 }
 
+function getEmployeeIdByName(req, res){
+	const name = req.params.name;
+
+	database.query('select * from EMPLOYEES where NAME="'+name+'"',
+		(error, results, fields) => {
+			if(error){
+				console.error(err.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.json(results);
+			}
+		}
+	)
+}
+
 export default {
 	getEmployeeById,
 	addEmployee,
 	getAllEmployees,
 	editEmployee,
-	deleteEmployee
+	deleteEmployee,
+	getEmployeeIdByName
 };

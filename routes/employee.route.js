@@ -13,4 +13,6 @@ router.route('/:id')
 	.put(controller.editEmployee)
 	.delete(controller.deleteEmployee);
 
+router.get('/name/:name', controller.getEmployeeIdByName);
+
 export default router;
