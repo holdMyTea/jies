@@ -67,6 +67,27 @@ function editManufacturer(req, res){
 	);
 }
 
+function getManufacturerByName(req, res){
+	const name = req.params.name;
+
+	console.log(name+'!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
+	database.query(
+		'select * from MANUFACTURERS where NAME="'+name+'"',
+		(error, results, fields) => {
+			if(error){
+				console.error(error.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.send(results);
+			}
+		}
+	);
+}
+
 function deleteManufacturer(req, res){
 	const id = req.params.id;
 
@@ -144,6 +165,7 @@ function getManufacturerById(req, res){
 }
 
 export default {
+	getManufacturerByName,
 	addManufacturer,
 	editManufacturer,
 	deleteManufacturer,

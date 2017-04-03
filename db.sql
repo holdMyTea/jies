@@ -27,7 +27,7 @@ CREATE TABLE `EMPLOYEES` (
   `NAME` varchar(40) DEFAULT NULL,
   `PHONE` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `EMPLOYEES` (
 
 LOCK TABLES `EMPLOYEES` WRITE;
 /*!40000 ALTER TABLE `EMPLOYEES` DISABLE KEYS */;
-INSERT INTO `EMPLOYEES` VALUES (1,'Saqaxoser','205510599'),(2,'Nonihifan','336578736'),(3,'Wevuzodoj','962628924'),(4,'Bamuyeruk','949552946'),(5,'Woqaxelah','451323642'),(6,'Wefaqixef','961254421'),(7,'Bekihexid','181474828'),(8,'Guhesogow','906789380'),(9,'Zojokovod','649507269'),(10,'Qecukadul','688961700'),(12,'Kappa','123456');
+INSERT INTO `EMPLOYEES` VALUES (1,'Saqaxoser','205510599'),(2,'Nonihifan','336578736'),(3,'Wevuzodoj','962628924'),(4,'Bamuyeruk','949552946'),(5,'Woqaxelah','451323642'),(6,'Wefaqixef','961254421'),(7,'Bekihexid','181474828'),(8,'Guhesogow','906789380'),(9,'Zojokovod','649507269'),(12,'Kappa','123456'),(13,'Kappa','123456'),(14,'Keepo','3306'),(15,'Kreygasmer','5');
 /*!40000 ALTER TABLE `EMPLOYEES` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +53,7 @@ CREATE TABLE `MANUFACTURERS` (
   `PHONE` varchar(25) DEFAULT NULL,
   `COUNTRY` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `MANUFACTURERS` (
 
 LOCK TABLES `MANUFACTURERS` WRITE;
 /*!40000 ALTER TABLE `MANUFACTURERS` DISABLE KEYS */;
-INSERT INTO `MANUFACTURERS` VALUES (1,'Zecozekiv','304512698','Cotufiyor'),(2,'Jayegabew','302205319','Qokucetux'),(3,'Sinohulut','351942098','Cokoxidav'),(4,'Xababawig','701624531','Bojonogil'),(5,'Liyikabeg','122953942','Xugebomic'),(6,'Manugucil','83045457','Xuwefujul'),(7,'Neqevukan','512026897','Xifexotop'),(8,'Ziyobuzez','983455355','Bibolabob');
+INSERT INTO `MANUFACTURERS` VALUES (1,'Zecozekiv','304512698','Cotufiyor'),(2,'Jayegabew','302205319','Qokucetux'),(3,'Sinohulut','351942098','Cokoxidav'),(4,'Xababawig','701624531','Bojonogil'),(5,'Liyikabeg','122953942','Xugebomic'),(6,'Manugucil','83045457','Xuwefujul'),(7,'Neqevukan','512026897','Xifexotop'),(8,'Ziyobuzez','983455355','Bibolabob'),(9,'Manuf1','3306','Narnia'),(10,'Manuf2','322','Narnia'),(21,'Ice Queen Ent.','31234','Narnia');
 /*!40000 ALTER TABLE `MANUFACTURERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +81,7 @@ CREATE TABLE `MEDICINES` (
   PRIMARY KEY (`ID`),
   KEY `MANUFACTURER` (`MANUFACTURER`),
   CONSTRAINT `MEDICINES_ibfk_1` FOREIGN KEY (`MANUFACTURER`) REFERENCES `MANUFACTURERS` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `MEDICINES` (
 
 LOCK TABLES `MEDICINES` WRITE;
 /*!40000 ALTER TABLE `MEDICINES` DISABLE KEYS */;
-INSERT INTO `MEDICINES` VALUES (1,'Kekudiyuv',4,0.460),(2,'Tarivefil',2,0.610),(3,'Cuxikibah',1,0.470),(4,'Cagugorep',2,0.320),(5,'Ponocahih',6,0.500),(6,'Yinuyubik',6,0.930),(7,'Canufunip',1,0.170),(8,'Qunebuvaw',4,0.450),(9,'Womajuwir',5,0.130),(10,'Xuhomunax',3,0.270),(11,'Zoraqanug',3,0.810),(12,'Hekebanop',7,0.250),(13,'Tehucesom',7,0.790),(14,'Wiratokik',6,0.450),(15,'Wogodopux',7,0.160),(16,'Mukajuyid',7,0.240),(17,'Jovovumof',5,0.070),(18,'Vogenetim',4,0.150),(19,'Cuhafiwok',7,0.280),(20,'Roqudaqiq',1,0.400),(21,'Majozamab',3,0.870),(22,'Jomalojob',4,0.980),(23,'Sehacureb',3,0.130),(24,'Zotobaboh',5,0.920),(25,'Xitesarip',2,0.170),(26,'Temuvezoh',5,0.120),(27,'Ciwofewij',4,0.190),(28,'Nonihubiv',6,0.190),(29,'Norimumuc',4,0.290),(30,'Dikomofup',4,0.200),(31,'Korvalol',4,0.750);
+INSERT INTO `MEDICINES` VALUES (1,'Kekudiyuv',4,0.460),(2,'Tarivefil',2,0.610),(3,'Cuxikibah',1,0.470),(4,'Cagugorep',2,0.320),(5,'Ponocahih',6,0.500),(6,'Yinuyubik',6,0.930),(7,'Canufunip',1,0.170),(8,'Qunebuvaw',4,0.450),(9,'Womajuwir',5,0.130),(10,'Xuhomunax',3,0.270),(11,'Zoraqanug',3,0.810),(12,'Hekebanop',7,0.250),(13,'Tehucesom',7,0.790),(14,'Wiratokik',6,0.450),(15,'Wogodopux',7,0.160),(16,'Mukajuyid',7,0.240),(17,'Jovovumof',5,0.070),(18,'Vogenetim',4,0.150),(19,'Cuhafiwok',7,0.280),(20,'Roqudaqiq',1,0.400),(21,'Majozamab',3,0.870),(22,'Jomalojob',4,0.980),(23,'Sehacureb',3,0.130),(24,'Zotobaboh',5,0.920),(25,'Xitesarip',2,0.170),(26,'Temuvezoh',5,0.120),(27,'Ciwofewij',4,0.190),(28,'Nonihubiv',6,0.190),(29,'Norimumuc',4,0.290),(30,'Dikomofup',4,0.200),(31,'Korvalol',4,0.750),(32,'Klappa Inc.',9,0.150),(33,'Kreygasminipilin',4,5.000);
 /*!40000 ALTER TABLE `MEDICINES` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-14 15:36:46
+-- Dump completed on 2017-04-03 23:27:02

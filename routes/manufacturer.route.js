@@ -12,7 +12,9 @@ router.get('/country/:country', controller.getManufacturersByCountry);
 
 router.route('/:id')
 	.get(controller.getManufacturerById)
-	.put(controller.editManufacturer)
+	.patch(controller.editManufacturer)
 	.delete(controller.deleteManufacturer);
+
+router.get('/name/:name', controller.getManufacturerByName);
 
 export default router;

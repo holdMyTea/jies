@@ -123,6 +123,25 @@ function getMedicineById(req, res){
 		);
 }
 
+function getMedicineByName(req, res){
+	const name = req.params.name;
+
+	database.query(
+		'select * from MEDICINES where NAME="'+name+'"',
+		(error, results, fields) => {
+			if(error){
+				console.error(err.stack);
+				res.status(500);
+				res.send('Taking heavy casulties');
+			}
+			else{
+				res.status(200);
+				res.json(results);
+			}
+		}
+	);
+}
+
 function getMedicineByManufacturer(req, res){
 	const manufacturer = req.params.manufacturer;
 
@@ -149,5 +168,6 @@ export default {
 	editMedicine,
 	deleteMedicine,
 	getMedicineById,
-	getMedicineByManufacturer
+	getMedicineByManufacturer,
+	getMedicineByName
 };

@@ -10,9 +10,11 @@ router.route('/')
 
 router.route('/:id')
 	.get(controller.getMedicineById)
-	.put(controller.editMedicine)
+	.patch(controller.editMedicine)
 	.delete(controller.deleteMedicine);
 
 router.get('/manufacturer/:manufacturer', controller.getMedicineByManufacturer);
+
+router.get('/name/:name', controller.getMedicineByName);
 
 export default router;

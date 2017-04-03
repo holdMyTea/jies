@@ -10,7 +10,7 @@ router.route('/')
 
 router.route('/:id')
 	.get(controller.getEmployeeById)
-	.put(controller.editEmployee)
+	.patch(controller.editEmployee)
 	.delete(controller.deleteEmployee);
 
 router.get('/name/:name', controller.getEmployeeIdByName);
