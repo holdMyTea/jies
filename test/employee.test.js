@@ -1,4 +1,4 @@
-import chai from 'chai'
+import chai, {expect} from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../app'
 
@@ -6,15 +6,6 @@ chai.use(chaiHttp)
 
 function test () {
   const prefix = '/employee'
-
-/* kinda doubt should i do it or not
-  but the idea is that, new row being POSTed,
-  then it's ID acquired through GET by name,
-  then, using this ID, it's being PUTted,
-  then DELETEd.
-  So the DB is not changed through tests
-  (besides auto_increment ID).
-*/
 
   const sampleName = 'test-name'
   const samplePhone = 5353535
@@ -24,13 +15,10 @@ function test () {
     chai.request(app)
       .get(prefix)
       .end((err, res) => {
-        if (err) {
-          chai.assert.fail(err, undefined, 'Exception is thrown')
-        } else {
-          res.should.have.status(200)
-          res.should.not.equal.null
-          done()
-        }
+        expect(err).to.be.null
+        expect(res).to.have.status(200)
+        expect(res).to.not.equal.null
+        done()
       })
   })
 
@@ -38,13 +26,10 @@ function test () {
     chai.request(app)
       .get(prefix + '/1')
       .end((err, res) => {
-        if (err) {
-          chai.assert.fail(err, undefined, 'Exception is thrown')
-        } else {
-          res.should.have.status(200)
-          res.text.should.not.equal.null
-          done()
-        }
+        expect(err).to.be.null
+        expect(res).to.have.status(200)
+        expect(res.text).to.not.equal.null
+        done()
       })
   })
 
@@ -53,13 +38,10 @@ function test () {
       .post(prefix)
       .send({name: sampleName, phone: samplePhone})
       .end((err, res) => {
-        if (err) {
-          chai.assert.fail(err, undefined, 'Exception is thrown')
-        } else {
-          res.should.have.status(200)
-          res.text.should.eql('Successful')
-          done()
-        }
+        expect(err).to.be.null
+        expect(res).to.have.status(200)
+        expect(res.text).to.eql('Successful')
+        done()
       })
   })
 
@@ -67,14 +49,11 @@ function test () {
     chai.request(app)
       .get(prefix + '/name/' + sampleName)
       .end((err, res) => {
-        if (err) {
-          chai.assert.fail(err, undefined, 'Exception is thrown')
-        } else {
-          res.should.have.status(200)
-          res.text.should.not.equal.null
-          sampleId = JSON.parse(res.text)[0].ID
-          done()
-        }
+        expect(err).to.be.null
+        expect(res).to.have.status(200)
+        expect(res.text).to.not.equal.null
+        sampleId = JSON.parse(res.text)[0].ID
+        done()
       })
   })
 
@@ -83,13 +62,10 @@ function test () {
         .patch(prefix + '/' + sampleId)
         .send({phone: 8800})
         .end((err, res) => {
-          if (err) {
-            chai.assert.fail(err, undefined, 'Exception is thrown')
-          } else {
-            res.should.have.status(200)
-            res.text.should.eql('Successful')
-            done()
-          }
+          expect(err).to.be.null
+          expect(res).to.have.status(200)
+          expect(res.text).to.eql('Successful')
+          done()
         })
   })
 
@@ -97,13 +73,10 @@ function test () {
     chai.request(app)
       .del(prefix + '/' + sampleId)
       .end((err, res) => {
-        if (err) {
-          chai.assert.fail(err, undefined, 'Exception is thrown')
-        } else {
-          res.should.have.status(200)
-          res.text.should.eql('Successful')
-          done()
-        }
+        expect(err).to.be.null
+        expect(res).to.have.status(200)
+        expect(res.text).to.eql('Successful')
+        done()
       })
   })
 
@@ -111,13 +84,10 @@ function test () {
     chai.request(app)
       .post(prefix)
       .end((err, res) => {
-        if (!err) {
-          console.log('No error, but should be')
-        } else {
-          res.should.have.status(400)
-          res.text.should.eql('Insuffitient arguments')
-          done()
-        }
+        expect(err).to.not.equal.null
+        expect(res).to.have.status(400)
+        expect(res.text).to.eql('Insuffitient arguments')
+        done()
       })
   })
 
@@ -125,13 +95,10 @@ function test () {
     chai.request(app)
       .patch(prefix + '/3')
       .end((err, res) => {
-        if (!err) {
-          console.log('No error, but should be')
-        } else {
-          res.should.have.status(400)
-          res.text.should.eql('Insuffitient arguments')
-          done()
-        }
+        expect(err).to.not.equal.null
+        expect(res).to.have.status(400)
+        expect(res.text).to.eql('Insuffitient arguments')
+        done()
       })
   })
 }
