@@ -1,20 +1,20 @@
-import express from 'express';
+import express from 'express'
 
-import controller from '../controllers/manufacturer.controller';
+import controller from '../controllers/manufacturer.controller'
 
-const router = express.Router();
+const router = express.Router()
 
 router.route('/')
-	.get(controller.getAllManufacturers)
-	.post(controller.addManufacturer);
+  .get(controller.getAllManufacturers)
+  .post(controller.addManufacturer)
 
-router.get('/country/:country', controller.getManufacturersByCountry);
+router.get('/country/:country', controller.getManufacturersByCountry)
 
 router.route('/:id')
-	.get(controller.getManufacturerById)
-	.patch(controller.editManufacturer)
-	.delete(controller.deleteManufacturer);
+  .get(controller.getManufacturerById)
+  .patch(controller.editManufacturer)
+  .delete(controller.deleteManufacturer)
 
-router.get('/name/:name', controller.getManufacturerByName);
+router.get('/name/:name', controller.getManufacturerByName)
 
-export default router;
+export default router
