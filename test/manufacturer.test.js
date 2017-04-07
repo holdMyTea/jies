@@ -18,7 +18,7 @@ function test () {
       .end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
-        expect(res.text).to.not.equal.null
+        expect(res.body).to.not.equal.null
         done()
       })
   })
@@ -29,7 +29,7 @@ function test () {
       .end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
-        expect(res.text).to.not.equal.null
+        expect(res.body).to.not.equal.null
         done()
       })
   })
@@ -40,7 +40,7 @@ function test () {
       .end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
-        expect(res.text).to.not.equal.null
+        expect(res.body).to.not.equal.null
         done()
       })
   })
@@ -63,7 +63,7 @@ function test () {
       .end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
-        expect(res.text).to.not.equal.null
+        expect(res.body).to.not.equal.null
         sampleId = res.body[0].ID
         done()
       })
