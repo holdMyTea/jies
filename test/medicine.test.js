@@ -4,7 +4,7 @@ import app from '../app'
 
 chai.use(chaiHttp)
 
-function test () {
+describe('medicine', () => {
   const prefix = '/medicine'
 
   const sampleName = 'Kapparin'
@@ -48,7 +48,7 @@ function test () {
   it('should add medicine', (done) => {
     chai.request(app)
       .post(prefix)
-      .send({name: sampleName, manufacturer: sampleManufacturer, dosage: sampleDosage})
+      .send({NAME: sampleName, MANUFACTURER: sampleManufacturer, DOSAGE: sampleDosage})
       .end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
@@ -72,7 +72,7 @@ function test () {
   it('should change one medicine', (done) => {
     chai.request(app)
       .patch(prefix + '/' + sampleId)
-      .send({dosage: 4.2})
+      .send({DOSAGE: 4.2})
       .end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
@@ -113,6 +113,4 @@ function test () {
         done()
       })
   })
-}
-
-export default test
+})

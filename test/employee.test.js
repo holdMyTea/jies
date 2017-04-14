@@ -4,12 +4,24 @@ import app from '../app'
 
 chai.use(chaiHttp)
 
-function test () {
+describe('employee', () => {
   const prefix = '/employee'
 
   const sampleName = 'test-name'
   const samplePhone = 5353535
   let sampleId
+
+  it('should add an employee', (done) => {
+    chai.request(app)
+      .post(prefix)
+      .send({NAME: sampleName, PHONE: samplePhone})
+      .end((err, res) => {
+        expect(err).to.be.null
+        expect(res).to.have.status(200)
+        expect(res.text).to.eql('Successful')
+        done()
+      })
+  })
 
   it('should get all employee', (done) => {
     chai.request(app)
@@ -33,18 +45,6 @@ function test () {
       })
   })
 
-  it('should add an employee', (done) => {
-    chai.request(app)
-      .post(prefix)
-      .send({name: sampleName, phone: samplePhone})
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res.text).to.eql('Successful')
-        done()
-      })
-  })
-
   it('should get an employee by name', (done) => {
     chai.request(app)
       .get(prefix + '/name/' + sampleName)
@@ -60,24 +60,13 @@ function test () {
   it('should change one employee', (done) => {
     chai.request(app)
         .patch(prefix + '/' + sampleId)
-        .send({phone: 8800})
+        .send({PHONE: 8800})
         .end((err, res) => {
           expect(err).to.be.null
           expect(res).to.have.status(200)
           expect(res.text).to.eql('Successful')
           done()
         })
-  })
-
-  it('should delete one employee', (done) => {
-    chai.request(app)
-      .del(prefix + '/' + sampleId)
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res.text).to.eql('Successful')
-        done()
-      })
   })
 
   it('should add no employees', (done) => {
@@ -101,6 +90,15 @@ function test () {
         done()
       })
   })
-}
 
-export default test
+  it('should delete one employee', (done) => {
+    chai.request(app)
+      .del(prefix + '/' + sampleId)
+      .end((err, res) => {
+        expect(err).to.be.null
+        expect(res).to.have.status(200)
+        expect(res.text).to.eql('Successful')
+        done()
+      })
+  })
+})
