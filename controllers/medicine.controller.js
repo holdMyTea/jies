@@ -1,42 +1,32 @@
 import database from '../services/db'
 
 function getAllMedicines (req, res) {
-  database.query(
-    'select * from MEDICINES',
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.json(results)
-      }
-    }
-  )
+  database.select().from('MEDICINES')
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error.stack)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function addMedicine (req, res) {
   const body = req.body
 
-  if (body.name && body.manufacturer && body.dosage) {
-    database.query(
-      'insert into MEDICINES(NAME,MANUFACTURER,DOSAGE)' +
-      ' values("' + body.name + '",' + body.manufacturer + ', ' + body.dosage + ')',
-      (error, results, fields) => {
-        if (error) {
-          console.error(error.stack)
-          res.status(500)
-          res.send('Taking heavy casulties')
-        } else {
-          res.status(200)
-          res.send('Successful')
-        }
-      }
+  if (body.NAME && body.MANUFACTURER && body.DOSAGE) {
+    database('MEDICINES').insert(
+      {NAME: body.NAME, MANUFACTURER: body.MANUFACTURER, DOSAGE: body.DOSAGE}
     )
+    .then(rows => {
+      res.send('Successful')
+    })
+    .catch(error => {
+      console.error(error.stack)
+      res.status(500).send('Taking heavy casulties')
+    })
   } else {
-    res.status(400)
-    res.send('Insuffitient arguments')
+    res.status(400).send('Insuffitient arguments')
   }
 }
 
@@ -44,120 +34,74 @@ function editMedicine (req, res) {
   const id = req.params.id
   const body = req.body
 
-  if (!(body.name || body.manufacturer || body.dosage)) {
-    res.status(400)
-    res.send('Insuffitient arguments')
+  if (!(body.NAME || body.MANUFACTURER || body.DOSAGE)) {
+    res.status(400).send('Insuffitient arguments')
     return
   }
 
-  let query
-  if (body.name) {
-    query = 'NAME="' + body.name + '"'
+  let obj = {}
+  if (body.NAME) {
+    obj.NAME = body.NAME
   }
-  if (body.manufacturer) {
-    if (query) {
-      query = query + ',MANUFACTURER=' + body.manufacturer
-    } else {
-      query = 'MANUFACTURER=' + body.manufacturer
-    }
+  if (body.MANUFACTURER) {
+    obj.MANUFACTURER = body.MANUFACTURER
   }
-  if (body.dosage) {
-    if (query) {
-      query = query + ',DOSAGE="' + body.dosage + '"'
-    } else {
-      query = 'DOSAGE="' + body.dosage + '"'
-    }
+  if (body.DOSAGE) {
+    obj.DOSAGE = body.DOSAGE
   }
 
-  database.query(
-    'update MEDICINES set ' + query + ' where ID=' + id,
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.send('Successful')
-      }
-    }
-  )
+  database('MEDICINES').where('ID', id).update(obj)
+  .then(rows => {
+    res.status(200).send('Successful')
+  })
+  .catch(error => {
+    console.error(error.stack)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function deleteMedicine (req, res) {
-  const id = req.params.id
-
-  database.query(
-    'delete from MEDICINES where ID=' + id,
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.send('Successful')
-      }
-    }
-  )
+  database('MEDICINES').where('ID', req.params.id).del()
+  .then(rows => {
+    res.send('Successful')
+  })
+  .catch(error => {
+    console.error(error.stack)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function getMedicineById (req, res) {
-  const id = req.params.id
-
-  if (Number.isInteger(Number(id))) {
-    database.query(
-      'select * from MEDICINES where ID=' + id,
-      (error, results, fields) => {
-        if (error) {
-          console.error(error.stack)
-          res.status(500)
-          res.send('Taking heavy casulties')
-        } else {
-          res.status(200)
-          res.json(results[0])
-        }
-      }
-    )
-  }
+  database.select().from('MEDICINES').where('ID', req.params.id)
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error.stack)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function getMedicineByName (req, res) {
-  const name = req.params.name
-
-  database.query(
-    'select * from MEDICINES where NAME="' + name + '"',
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.json(results)
-      }
-    }
-  )
+  database.select().from('MEDICINES').where('NAME', req.params.name)
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error.stack)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function getMedicineByManufacturer (req, res) {
-  const manufacturer = req.params.manufacturer
-
-  if (Number.isInteger(Number(manufacturer))) {
-    database.query(
-      'select * from MEDICINES where MANUFACTURER=' + manufacturer,
-      (error, results, fields) => {
-        if (error) {
-          console.error(error.stack)
-          res.status(500)
-          res.send('Taking heavy casulties')
-        } else {
-          res.status(200)
-          res.json(results)
-        }
-      }
-    )
-  }
+  database.select().from('MEDICINES').where('MANUFACTURER', req.params.manufacturer)
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error.stack)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 export default {

@@ -3,24 +3,19 @@ import database from '../services/db'
 function addManufacturer (req, res) {
   const body = req.body
 
-  if (body.name && body.phone && body.country) {
-    database.query(
-      'insert into MANUFACTURERS(NAME,PHONE,COUNTRY)' +
-      ' values("' + body.name + '",' + body.phone + ', "' + body.country + '")',
-      (error, results, fields) => {
-        if (error) {
-          console.error(error.stack)
-          res.status(500)
-          res.send('Taking heavy casulties')
-        } else {
-          res.status(200)
-          res.send('Successful')
-        }
-      }
-    )
+  if (body.NAME && body.PHONE && body.COUNTRY) {
+    database('MANUFACTURERS').insert({
+      NAME: body.NAME, PHONE: body.PHONE, COUNTRY: body.COUNTRY
+    })
+    .then(rows => {
+      res.send('Successful')
+    })
+    .catch(error => {
+      console.error(error.stack)
+      res.status(500).send('Taking heavy casulties')
+    })
   } else {
-    res.status(400)
-    res.send('Insuffitient arguments')
+    res.status(400).send('Insuffitient arguments')
   }
 }
 
@@ -28,138 +23,87 @@ function editManufacturer (req, res) {
   const id = req.params.id
   const body = req.body
 
-  if (!(body.name || body.phone || body.country)) {
-    res.status(400)
-    res.send('Insuffitient arguments')
+  if (!(body.NAME || body.PHONE || body.COUNTRY)) {
+    res.status(400).send('Insuffitient arguments')
     return
   }
 
-  let query
-  if (body.name) {
-    query = 'NAME="' + body.name + '"'
+  let obj = {}
+  if (body.NAME) {
+    obj.NAME = body.NAME
   }
-  if (body.phone) {
-    if (query) {
-      query = query + ',PHONE=' + body.phone
-    } else {
-      query = 'PHONE=' + body.phone
-    }
+  if (body.PHONE) {
+    obj.PHONE = body.PHONE
   }
-  if (body.country) {
-    if (query) {
-      query = query + ',COUNTRY="' + body.country + '"'
-    } else {
-      query = 'COUNTRY="' + body.country + '"'
-    }
+  if (body.COUNTRY) {
+    obj.CUNTRY = body.COUNTRY
   }
 
-  database.query(
-    'update MANUFACTURERS set ' + query + ' where ID=' + id,
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.send('Successful')
-      }
-    }
-  )
+  database('MANUFACTURERS').where('ID', id).update(obj)
+  .then(rows => {
+    res.send('Successful')
+  })
+  .catch(error => {
+    console.error(error.stack)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function getManufacturerByName (req, res) {
-  const name = req.params.name
-
-  console.log(name + '!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-
-  database.query(
-    'select * from MANUFACTURERS where NAME="' + name + '"',
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.send(results)
-      }
-    }
-  )
+  database.select().from('MANUFACTURERS').where('NAME', req.params.name)
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function deleteManufacturer (req, res) {
   const id = req.params.id
 
-  database.query(
-    'delete from MANUFACTURERS where ID=' + id,
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.send('Successful')
-      }
-    }
-  )
+  database('MANUFACTURERS').where('ID', id).del()
+  .then(rows => {
+    res.send('Successful')
+  })
+  .catch(error => {
+    console.error(error)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function getManufacturersByCountry (req, res) {
-  const country = req.params.country
-
-  if (String(country).length > 0) {
-    database.query(
-      'select * from MANUFACTURERS where COUNTRY="' + country + '"',
-      (error, results, fields) => {
-        if (error) {
-          console.error(error.stack)
-          res.status(500)
-          res.send('Taking heavy casulties')
-        } else {
-          res.status(200)
-          res.json(results)
-        }
-      }
-    )
-  }
+  database.select().from('MANUFACTURERS').where('COUNTRY', req.params.country)
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function getAllManufacturers (req, res) {
-  database.query(
-    'select * from MANUFACTURERS',
-    (error, results, fields) => {
-      if (error) {
-        console.error(error.stack)
-        res.status(500)
-        res.send('Taking heavy casulties')
-      } else {
-        res.status(200)
-        res.json(results)
-      }
-    }
-  )
+  database.select().from('MANUFACTURERS')
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 function getManufacturerById (req, res) {
-  const id = req.params.id
-
-  if (Number.isInteger(Number(id))) {
-    database.query(
-      'select * from MANUFACTURERS where ID=' + id,
-      (error, results, fields) => {
-        if (error) {
-          console.error(error.stack)
-          res.status(500)
-          res.send('Taking heavy casulties')
-        } else {
-          res.status(200)
-          res.json(results[0])
-        }
-      }
-    )
-  }
+  database.select().from('MANUFACTURERS').where('ID', req.params.id)
+  .then(rows => {
+    res.json(rows)
+  })
+  .catch(error => {
+    console.error(error)
+    res.status(500).send('Taking heavy casulties')
+  })
 }
 
 export default {
