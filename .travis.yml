@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "6"
+services:
+  - mysql
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS PHARMACY;'
+  - mysql -u root PHARMACY < db.sql
+addons:
+  hosts:
+    - kappa.dev

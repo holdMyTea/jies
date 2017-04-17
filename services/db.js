@@ -7,7 +7,7 @@ export default knex({
   connection: {
     host: vars.DB_HOST,
     user: vars.DB_USER,
-    password: vars.DB_PASS,
+    password: '',
     database: vars.DB_DATABASE
   }
 })
