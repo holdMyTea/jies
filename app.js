@@ -24,6 +24,6 @@ app.use('/medicine', medicine)
 
 app.get('/', (request, response) => response.send('Kappa'))
 
-app.listen(vars.APP_PORT, () => console.log('Listening'))
+app.listen(vars.APP_PORT, vars.APP_HOST, () => console.log('Listening'))
 
 export default app
