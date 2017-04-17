@@ -6,4 +6,4 @@ services:
 before_install:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('pass') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - mysql -e 'CREATE DATABASE IF NOT EXISTS PHARMACY;'
-  - mysql -u root PHARMACY < db.sql
+  - echo $DB_PASS | mysql -u root -p PHARMACY < db.sql
