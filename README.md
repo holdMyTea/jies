@@ -3,9 +3,9 @@
 
 Enviromental variables
 ----------------------
-APP_HOST - localhost
-APP_PORT - 8080
-DB_DATABASE - PHARMACY
-DB_HOST - localhost
-DB_USER - root
-DB_PASS - pass
+1. APP_HOST - localhost
+2. APP_PORT - 8080
+3. DB_DATABASE - PHARMACY
+4. DB_HOST - localhost
+5. DB_USER - root
+6. DB_PASS - pass
