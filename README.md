@@ -9,3 +9,7 @@ Enviromental variables
 4. DB_HOST - localhost
 5. DB_USER - root
 6. DB_PASS - pass
+
+Dockerization
+--------------
+Just run `sudo ./dockerscript`

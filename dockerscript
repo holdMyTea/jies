@@ -1,0 +1,23 @@
+#!/bin/sh
+
+echo "Building app image..."
+docker build -t jies .
+
+echo "Starting DB..."
+docker run --name db -d \
+  -e MYSQL_ROOT_PASSWORD=pass \
+  -e MYSQL_DATABASE=PHARMACY \
+  -p 3306:3306 \
+  mysql:latest
+
+echo "Waiting for DB to start up..."
+# just give it a time
+sleep 40
+echo "At last"
+docker exec db mysqladmin --silent --wait=20 -uroot -ppass ping || exit 1
+
+echo "Setting up initial data..."
+docker exec -i db mysql -uroot -ppass PHARMACY < db.sql
+
+# starting app
+docker run -it -p 8080:8080 --link=db:db jies
