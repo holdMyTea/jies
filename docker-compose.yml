@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+
+  server:
+    build:
+      context: .
+      dockerfile: SERVER_Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8080
+      - DB_DATABASE=PHARMACY
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=roop
+    tty: true
+
+  db:
+    build:
+      context: .
+      dockerfile: DB_Dockerfile
+    tty: true
+
+# docker-compose build
+# docker-compose up
+# docker exec -it #container_id /bin/bash
+# npm run-script file
+
+# it's supposed to take one command instead of 5 and db should work as well

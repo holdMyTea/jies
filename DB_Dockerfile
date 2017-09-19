@@ -1,0 +1,8 @@
+FROM mysql/mysql-server:latest
+
+ENV MYSQL_ROOT_PASSWORD="roop"
+ENV MYSQL_DATABASE="PHARMACY"
+
+ADD db.sql /docker-entrypoint-initdb.d
+
+EXPOSE 3306:3306
