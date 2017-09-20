@@ -10,13 +10,15 @@ services:
       - db
     ports:
       - "8080:8080"
+    links:
+      - db:db
     environment:
       - APP_HOST=0.0.0.0
       - APP_PORT=8080
       - DB_DATABASE=PHARMACY
       - DB_HOST=db
-      - DB_USER=root
-      - DB_PASS=roop
+      - DB_USER=usar
+      - DB_PASS=pass
     tty: true
 
   db:
@@ -30,4 +32,4 @@ services:
 # docker exec -it #container_id /bin/bash
 # npm run-script file
 
-# it's supposed to take one command instead of 5 and db should work as well
+# it's supposed to take one command instead of 5
